@@ -20,8 +20,18 @@ interface UserInfo {
 const Page = () => {
   const {setGlobalState, globalState} = useContext(Context)
   const location = useRouter();
-  const userId = localStorage.getItem("userId");
-  const token = localStorage.getItem("access_token");
+
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("access_token");
+      setAccessToken(token);
+      setUserId(userId);
+    }
+  }, [globalState]);
 
   const axiosInstance = useAxios();
 
@@ -31,12 +41,12 @@ const Page = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (userId && token) {
+      if (userId && accessToken) {
         try {
           const response = await axiosInstance.get(`user/${userId}`, {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `${token}`,
+              Authorization: `${accessToken}`,
             },
           });
           setData(response.data);
