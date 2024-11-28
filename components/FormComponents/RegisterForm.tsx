@@ -1,8 +1,11 @@
-import React, { SetStateAction } from "react";
+"use client";
+import React, { SetStateAction, useState } from "react";
 import CustomInput from "../ui/CustomInput";
 import Button from "../ui/Button";
 import { FacebookIcon, GoogleIcon } from "@/public/images/icon";
 import { useAxios } from "@/hooks/useAxios";
+import toast, { Toaster } from "react-hot-toast";
+import { Loader } from "lucide-react";
 
 interface RegisterAction {
   setFormAction: React.Dispatch<SetStateAction<string>>;
@@ -13,33 +16,45 @@ const RegisterForm: React.FC<RegisterAction> = ({
   setFormAction,
   setUserEmail,
 }) => {
-  async function handleSubmit(e: React.MouseEvent<HTMLFormElement>) {
+  const axiosInstance = useAxios();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  async function handleRegisterSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setUserEmail((e.target as HTMLFormElement).email.value);
     const data = {
       email: (e.target as HTMLFormElement).email.value,
       firstName: (e.target as HTMLFormElement).username.value,
-      lasrName: (e.target as HTMLFormElement).username.value,
+      lastName: (e.target as HTMLFormElement).username.value,
       password: (e.target as HTMLFormElement).password.value,
     };
 
-    console.log(data);
-
+    setIsLoading(true);
     try {
-      const response = await useAxios().post("/register", data);
-      console.log(response?.data?.Response);
-      setFormAction("verifyUser");
+      const response = await axiosInstance.post("/register", data);
+      if (response.status === 200) {
+        toast.success("Registration successful");
+        setTimeout(() => {
+          setFormAction("verifyUser");
+        }, 1000);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        toast.error("Some inputs are wrong.");
+      }
     } catch (error) {
-      console.error(error);
+      setIsLoading(false);
+      toast.error("Registration failed");
     }
   }
   return (
     <div className="mt-[53px] max-w-[350px] w-full">
+      <Toaster position="top-right" reverseOrder={false} />
       <p>Enter your username, email, and password to register.</p>
       <form
         className="space-y-4 mt-[14px]"
         autoComplete="off"
-        onSubmit={handleSubmit}
+        onSubmit={handleRegisterSubmit}
       >
         <CustomInput
           type="text"
@@ -65,7 +80,14 @@ const RegisterForm: React.FC<RegisterAction> = ({
           name="confirm-password"
           placeholder="Confirm Password"
         />
-        <Button title="Register" type="submit" extraStyle={"w-full"} />
+        <Button
+          iconRight={isLoading ? <Loader className="rotateAnimation" /> : null}
+          title={isLoading ? "Processing..." : "Submit"}
+          type="submit"
+          extraStyle={`w-full mt-[20px] ${
+            isLoading ? "opacity-70 cursor-not-allowed" : ""
+          }`}
+        />
       </form>
       <div className="w-full mt-[46px]">
         <div className="w-full pb-[27px]">

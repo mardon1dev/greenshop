@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode } from "react";
 import { X } from "lucide-react";
 
 interface ModalTypes {
@@ -20,7 +20,7 @@ const ModalWrapper: React.FC<ModalTypes> = ({
           setOpenModal(false);
         }
       }}
-      className={`fixed inset-0 bg-[#000]/30 w-full flex items-center justify-center overflow-y-auto ${
+      className={`fixed inset-0 bg-[#000]/30 w-full flex items-center justify-center overflow-y-auto z-50 pt-[100px] ${
         openModal
           ? "scale-100 opacity-100"
           : "scale-90 opacity-0 pointer-events-none"

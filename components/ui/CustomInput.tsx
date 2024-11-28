@@ -7,6 +7,7 @@ interface InputTypes {
   placeholder?: string;
   name: string;
   id: string;
+  extraClass?: string
 }
 
 const CustomInput: React.FC<InputTypes> = ({
@@ -14,6 +15,7 @@ const CustomInput: React.FC<InputTypes> = ({
   placeholder = "",
   name,
   id,
+  extraClass
 }) => {
   const [focus, setFocus] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -32,7 +34,7 @@ const CustomInput: React.FC<InputTypes> = ({
         onBlur={() => setFocus(false)}
         className={`w-full py-3 px-4 placeholder:text-[#A5A5A5] text-black outline-none border-[1px] rounded-[5px] ${
           focus ? "border-[#46A358]" : "border-[#EAEAEA]"
-        }`}
+        } ${extraClass}`}
         aria-label={placeholder || name}
       />
       {isPasswordField && (

@@ -36,3 +36,16 @@ body {
     rgba(245, 245, 245, 0.5) 107.51%
   );
 }
+
+.rotateAnimation {
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
