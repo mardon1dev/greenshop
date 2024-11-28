@@ -65,8 +65,9 @@ const VerifyUserForm: React.FC<VerifyUserFormProps> = ({
           toast.success("User successfully verified!");
           setTimeout(() => {
             setFormAction("login");
-          }, 1000);
+          }, 500);
           setIsLoading(false);
+          (e.target as HTMLFormElement).reset();
         } else {
           setIsLoading(false);
           toast.error("Invalid OTP. Please try again.");
@@ -89,6 +90,7 @@ const VerifyUserForm: React.FC<VerifyUserFormProps> = ({
   return (
     <div className="flex flex-col items-center mt-[46px]">
       <Toaster position="top-right" reverseOrder={false} />
+      <h3 className="text-[24px] font-bold text-green-600">Verify User</h3>
       <form className="flex flex-col gap-2" onSubmit={handleVerifySubmit}>
         <div className="flex gap-2">
           {otp.map((digit, index) => (

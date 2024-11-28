@@ -40,8 +40,8 @@ const Carousel: React.FC<CarouselTypes> = ({ data }) => {
               <div className="max-w-[655px] w-full flex flex-col md:items-start md:text-left items-center text-center font-medium leading-4 tracking-widest">
                 <span className="uppercase">Welcome to Greenshop</span>
                 <p className="font-black md:text-[70px] sm:text-[40px] text-[28px] md:leading-[70px] sm:leading-[40px] leading-[28px] uppercase mt-2">
-                  Let&#39;s Make Better
-                  <span className="text-green-700">Planet</span>
+                  Let&#39;s Make a Better
+                  <span className="text-green-700"> Planet</span>
                 </p>
                 <p className="text-[#727272] mt-2">
                   We are an online plant shop offering a wide range of cheap and

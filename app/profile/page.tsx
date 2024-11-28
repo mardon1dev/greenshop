@@ -2,9 +2,10 @@
 
 import ModalWrapper from "@/components/Modal";
 import Button from "@/components/ui/Button";
+import { Context } from "@/context/Context";
 import { useAxios } from "@/hooks/useAxios";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 interface UserInfo {
   bio?: string;
@@ -17,6 +18,7 @@ interface UserInfo {
 }
 
 const Page = () => {
+  const {setGlobalState, globalState} = useContext(Context)
   const location = useRouter();
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("access_token");
@@ -46,10 +48,11 @@ const Page = () => {
     };
 
     fetchUserData();
-  }, [axiosInstance, userId, token]);
+  }, [userId, token]);
 
   const handleLogOut = () => {
     setOpenLogOut(false);
+    setGlobalState(globalState + 1)
     localStorage.clear();
     location.push("/");
   };

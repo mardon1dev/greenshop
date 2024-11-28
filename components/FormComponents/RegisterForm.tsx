@@ -36,8 +36,9 @@ const RegisterForm: React.FC<RegisterAction> = ({
         toast.success("Registration successful");
         setTimeout(() => {
           setFormAction("verifyUser");
-        }, 1000);
+        }, 500);
         setIsLoading(false);
+        (e.target as HTMLFormElement).reset();
       } else {
         setIsLoading(false);
         toast.error("Some inputs are wrong.");

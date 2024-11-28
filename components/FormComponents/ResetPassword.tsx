@@ -36,8 +36,10 @@ const ResetPassword: React.FC<ResetPasswordAction> = ({
         toast.success("Password reset successfully");
         setTimeout(() => {
           setFormAction("login");
-        }, 1000);
+        }, 500);
         setIsLoading(false);
+        (e.target as HTMLFormElement).reset();
+
       } else {
         setIsLoading(false);
         toast.error("Password or otp is wrong.");
@@ -50,9 +52,9 @@ const ResetPassword: React.FC<ResetPasswordAction> = ({
   }
 
   return (
-    <div className="mt-[53px] max-w-[350px] w-full">
+    <div className="mt-[53px] w-[300px]">
       <Toaster position="top-right" reverseOrder={false} />
-
+      <h2 className="text-[24px] font-bold text-green-600">Rest Password</h2>
       <form
         className="space-y-4 mt-[14px]"
         autoComplete="off"

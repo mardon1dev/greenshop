@@ -28,25 +28,25 @@ const ForgotPassword: React.FC<ForgotPaswordAction> = ({
         toast.success("Email sent successfully");
         setTimeout(() => {
           setFormAction("resetPassword");
-        }, 1000);
+        }, 500);
         setIsLoading(false);
+        (e.target as HTMLFormElement).reset();
       } else {
         setIsLoading(false);
-        toast.error("Email not found");
+        toast.error("Error sending email");
       }
     } catch (error) {
       console.log(error);
       setIsLoading(false);
-      toast.error("Error sending email");
+      toast.error("Email not found");
     }
   }
   function handleLogin() {
     setFormAction("login");
   }
   return (
-    <div className="mt-[53px] max-w-[350px] w-full">
+    <div className="mt-[53px] w-[300px]">
       <Toaster position="top-right" reverseOrder={false} />
-
       <form
         className="space-y-4 mt-[14px]"
         autoComplete="off"

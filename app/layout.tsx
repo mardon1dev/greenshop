@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
+import ReactQueryProvider from "@/query/ReactQueryProvider";
+import { GreenShopContext } from "@/context/Context";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,12 +27,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en">
       <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        {children}
+        <ReactQueryProvider>
+          <GreenShopContext>
+            <>
+              <Header />
+              {children}
+            </>
+          </GreenShopContext>
+        </ReactQueryProvider>
       </body>
     </html>
   );

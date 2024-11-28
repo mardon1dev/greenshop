@@ -1,9 +1,10 @@
 "use client";
+
 import { LogIn, Menu, Search, ShoppingCart, User2Icon, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "./ui/Button";
 import ModalWrapper from "./Modal";
 import LoginForm from "./FormComponents/LoginForm";
@@ -11,6 +12,7 @@ import RegisterForm from "./FormComponents/RegisterForm";
 import VerifyUserForm from "./FormComponents/VerifyUserForm";
 import ForgotPassword from "./FormComponents/ForgotPassword";
 import ResetPassword from "./FormComponents/ResetPassword";
+import { Context } from "@/context/Context";
 
 const Header = () => {
   const navlinks = [
@@ -20,6 +22,8 @@ const Header = () => {
     { path: "/blogs", label: "Blogs" },
   ];
 
+  const { globalState, setGlobalState } = useContext(Context);
+
   const pathname = usePathname();
   const location = useRouter();
   const [openModal, setOpenModal] = useState(false);
@@ -28,8 +32,17 @@ const Header = () => {
 
   const [openNavbar, setOpenNavbar] = useState(false);
 
-  const access_token = localStorage.getItem("access_token");
-  const userName = localStorage.getItem("firstName");
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("access_token");
+      const name = localStorage.getItem("firstName");
+      setAccessToken(token);
+      setUserName(name);
+    }
+  }, [globalState]);
 
   return (
     <>
@@ -96,7 +109,7 @@ const Header = () => {
                   0
                 </span>
               </div>
-              {!access_token ? (
+              {!accessToken ? (
                 <Button
                   iconLeft={<LogIn />}
                   title="Login"
@@ -186,12 +199,11 @@ const Header = () => {
           {formAction == "verifyUser" && (
             <div className="text-center w-[300px]">
               <span
-                className={`text-xl font-medium leading-4 cursor-pointer ${
+                className={`text-xl font-medium leading-4 ${
                   formAction == "verifyUser"
                     ? "text-[#46a358]"
                     : "text-[#3D3D3D]"
                 }`}
-                onClick={() => setFormAction("verifyUser")}
               >
                 Verification
               </span>
@@ -206,12 +218,11 @@ const Header = () => {
           {formAction == "forgotPassword" && (
             <div className="text-center w-[300px]">
               <span
-                className={`text-xl font-medium leading-4 cursor-pointer ${
+                className={`text-xl font-medium leading-4 ${
                   formAction == "forgotPassword"
                     ? "text-[#46a358]"
                     : "text-[#3D3D3D]"
                 }`}
-                onClick={() => setFormAction("verifyUser")}
               >
                 Forgot Password
               </span>
@@ -225,26 +236,30 @@ const Header = () => {
           )}
           {formAction == "resetPassword" && (
             <div className="text-center w-[300px]">
-            <span
-              className={`text-xl font-medium leading-4 cursor-pointer ${
-                formAction == "resetPassword"
-                  ? "text-[#46a358]"
-                  : "text-[#3D3D3D]"
-              }`}
-              onClick={() => setFormAction("verifyUser")}
-            >
-              Forgot Password
-            </span>
-            {
-              <ResetPassword email={userEmail} setFormAction={setFormAction} />
-            }
-          </div>
+              <span
+                className={`text-xl font-medium leading-4 ${
+                  formAction == "resetPassword"
+                    ? "text-[#46a358]"
+                    : "text-[#3D3D3D]"
+                }`}
+              >
+                Forgot Password
+              </span>
+              {
+                <ResetPassword
+                  email={userEmail}
+                  setFormAction={setFormAction}
+                />
+              }
+            </div>
           )}
           {formAction == "login" && (
             <LoginForm
               setFormAction={setFormAction}
               setUserEmail={setUserEmail}
               setOpenModal={setOpenModal}
+              setGlobalState={setGlobalState}
+              globalState={globalState}
             />
           )}
           {formAction == "register" && (

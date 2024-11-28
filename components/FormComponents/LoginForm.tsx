@@ -11,12 +11,16 @@ interface LoginAction {
   setFormAction: React.Dispatch<SetStateAction<string>>;
   setUserEmail: React.Dispatch<SetStateAction<string>>;
   setOpenModal: React.Dispatch<SetStateAction<boolean>>;
+  setGlobalState: React.Dispatch<SetStateAction<number>>;
+  globalState: number
 }
 
 const LoginForm: React.FC<LoginAction> = ({
   setFormAction,
   setUserEmail,
   setOpenModal,
+  setGlobalState,
+  globalState
 }) => {
   const axiosInstance = useAxios();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -38,8 +42,10 @@ const LoginForm: React.FC<LoginAction> = ({
         toast.success("Login successful!");
         setTimeout(() => {
           setOpenModal(false);
-        }, 1000);
+        }, 500);
         setIsLoading(false);
+        setGlobalState(globalState + 1);
+        (e.target as HTMLFormElement).reset();
       } else {
         setIsLoading(false);
         toast.error("Invalid email or password.");
