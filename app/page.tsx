@@ -3,7 +3,6 @@ import MainImage from "../public/carousel-image1.png";
 import { StaticImageData } from "next/image";
 import Categories from "@/service/Categories";
 import ShowProducts from "@/service/ShowProducts";
-import TagsProducts from "@/service/TagsProducts";
 import RangeInput from "@/service/RangeInput/RangeInput";
 
 export interface SingleDatTypes {

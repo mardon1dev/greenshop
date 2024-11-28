@@ -48,7 +48,7 @@ const Page = () => {
     };
 
     fetchUserData();
-  }, [userId, token]);
+  }, []);
 
   const handleLogOut = () => {
     setOpenLogOut(false);
