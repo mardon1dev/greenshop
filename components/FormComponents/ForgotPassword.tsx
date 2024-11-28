@@ -35,6 +35,7 @@ const ForgotPassword: React.FC<ForgotPaswordAction> = ({
         toast.error("Email not found");
       }
     } catch (error) {
+      console.log(error);
       setIsLoading(false);
       toast.error("Error sending email");
     }

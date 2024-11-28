@@ -1,5 +1,4 @@
 "use client";
-import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
@@ -41,7 +40,7 @@ const Carousel: React.FC<CarouselTypes> = ({ data }) => {
               <div className="max-w-[655px] w-full flex flex-col md:items-start md:text-left items-center text-center font-medium leading-4 tracking-widest">
                 <span className="uppercase">Welcome to Greenshop</span>
                 <p className="font-black md:text-[70px] sm:text-[40px] text-[28px] md:leading-[70px] sm:leading-[40px] leading-[28px] uppercase mt-2">
-                  Let's Make Better{" "}
+                  Let's Make Better
                   <span className="text-green-700">Planet</span>
                 </p>
                 <p className="text-[#727272] mt-2">
@@ -49,7 +48,11 @@ const Carousel: React.FC<CarouselTypes> = ({ data }) => {
                   trendy plants. Use our plants to create an unique Urban
                   Jungle. Order your favorite plants!
                 </p>
-                <Button title="SHOP NOW" type="button" extraStyle="mt-[42px] w-[150px] text-[16px]" />
+                <Button
+                  title="SHOP NOW"
+                  type="button"
+                  extraStyle="mt-[42px] w-[150px] text-[16px]"
+                />
               </div>
               <div className="max-w-[400px] w-full">
                 <Image

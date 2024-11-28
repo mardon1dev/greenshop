@@ -36,15 +36,16 @@ const LoginForm: React.FC<LoginAction> = ({
         localStorage.setItem("firstName", response?.data?.first_name);
         localStorage.setItem("userId", response?.data?.id);
         toast.success("Login successful!");
-        setTimeout(()=>{
+        setTimeout(() => {
           setOpenModal(false);
-          }, 1000);
+        }, 1000);
         setIsLoading(false);
       } else {
         setIsLoading(false);
         toast.error("Invalid email or password.");
       }
     } catch (error) {
+      console.log(error);
       setIsLoading(false);
       toast.error("An error occurred while logging in. Please try again.");
     }

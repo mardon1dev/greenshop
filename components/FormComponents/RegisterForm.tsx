@@ -43,6 +43,7 @@ const RegisterForm: React.FC<RegisterAction> = ({
         toast.error("Some inputs are wrong.");
       }
     } catch (error) {
+      console.log(error);
       setIsLoading(false);
       toast.error("Registration failed");
     }

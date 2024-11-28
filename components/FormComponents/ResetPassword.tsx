@@ -18,7 +18,7 @@ const ResetPassword: React.FC<ResetPasswordAction> = ({
   const axiosInstance = useAxios();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  async function handleResetSubmit (e: React.FormEvent<HTMLFormElement>) {
+  async function handleResetSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const form = e.currentTarget;
@@ -43,10 +43,11 @@ const ResetPassword: React.FC<ResetPasswordAction> = ({
         toast.error("Password or otp is wrong.");
       }
     } catch (error) {
+      console.log(error);
       setIsLoading(false);
       toast.error("An error occurred. Please try again.");
     }
-  };
+  }
 
   return (
     <div className="mt-[53px] max-w-[350px] w-full">

@@ -1,6 +1,5 @@
 import Carousel from "@/components/Carousel/Carousel";
 import MainImage from "../public/carousel-image1.png"
-import { ReactNode } from "react";
 import { StaticImageData } from "next/image";
 
 export interface SingleDatTypes {
