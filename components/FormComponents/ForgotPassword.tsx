@@ -20,7 +20,7 @@ const ForgotPassword: React.FC<ForgotPaswordAction> = ({
   async function handleForgotSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setUserEmail((e.target as HTMLFormElement).email.value);
-    let email = (e.target as HTMLFormElement).email.value;
+    const email = (e.target as HTMLFormElement).email.value;
     setIsLoading(true);
     try {
       const response = await axiosInstance.post(`/forgot/${email}`, {});

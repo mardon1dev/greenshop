@@ -72,6 +72,9 @@ const VerifyUserForm: React.FC<VerifyUserFormProps> = ({
           toast.error("Invalid OTP. Please try again.");
         }
       } catch (error) {
+        console.log(error);
+
+        setIsLoading(false);
         toast.error(
           "An error occurred while verifying the OTP. Please try again."
         );
