@@ -58,7 +58,7 @@ const Page = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [userId, accessToken]);
 
   const handleLogOut = () => {
     setOpenLogOut(false);
