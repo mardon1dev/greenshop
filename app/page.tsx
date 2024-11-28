@@ -1,3 +1,4 @@
+"use client"
 import Carousel from "@/components/Carousel/Carousel";
 import MainImage from "../public/carousel-image1.png";
 import { StaticImageData } from "next/image";
