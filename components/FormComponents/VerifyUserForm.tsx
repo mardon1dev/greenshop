@@ -94,15 +94,17 @@ const VerifyUserForm: React.FC<VerifyUserFormProps> = ({
           {otp.map((digit, index) => (
             <input
               key={index}
-              type="text"
-              inputMode="numeric"
+              type="tel"
               value={digit}
               onChange={(e) => handleChange(e.target.value, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              ref={(ref) => (otpBoxRefs.current[index] = ref)}
+              ref={(ref) => {
+                otpBoxRefs.current[index] = ref;
+              }}
               required
               maxLength={1}
               aria-label={`OTP digit ${index + 1}`}
+              pattern="[0-9]*"
               className="w-12 h-12 text-center text-lg font-medium border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
             />
           ))}
