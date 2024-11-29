@@ -17,6 +17,8 @@ interface ContextType {
   setMaxPrice: React.Dispatch<SetStateAction<number>>;
   minPrice: number;
   setMinPrice: React.Dispatch<SetStateAction<number>>;
+  size: string | null;
+  setSize: React.Dispatch<SetStateAction<string | null>>;
 }
 
 export const Context = createContext<ContextType>({
@@ -30,6 +32,8 @@ export const Context = createContext<ContextType>({
   setMaxPrice: () => {},
   minPrice: 25,
   setMinPrice: () => {},
+  size: null,
+  setSize: () => {},
 });
 
 interface CountryContextProps {
@@ -44,6 +48,7 @@ export const GreenShopContext: React.FC<CountryContextProps> = ({
   const [tagName, setTagName] = useState<string | null>(null);
   const [maxPrice, setMaxPrice] = useState(700);
   const [minPrice, setMinPrice] = useState(25);
+  const [size, setSize] = useState<string | null>(null);
   return (
     <Context.Provider
       value={{
@@ -57,6 +62,8 @@ export const GreenShopContext: React.FC<CountryContextProps> = ({
         setMaxPrice,
         minPrice,
         setMinPrice,
+        size,
+        setSize,
       }}
     >
       {children}

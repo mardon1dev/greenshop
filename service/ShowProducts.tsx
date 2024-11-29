@@ -5,7 +5,7 @@ import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { Heart, ShoppingCart } from "lucide-react";
 import Image from "next/image";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import TagsProducts from "./TagsProducts";
 
 interface ProductType {
@@ -26,7 +26,8 @@ interface ProductType {
 }
 
 const ShowProducts = () => {
-  const { categoryName, tagName, maxPrice, minPrice } = useContext(Context);
+  const { categoryName, tagName, maxPrice, minPrice, size } =
+    useContext(Context);
 
   const axiosInstance = useAxios();
 
@@ -39,50 +40,47 @@ const ShowProducts = () => {
         tags: tagName,
         min_price: minPrice,
         max_price: maxPrice,
+        size: size,
       },
     });
     return response?.data?.products || [];
   };
 
   const { data: products = [], isLoading } = useQuery({
-    queryKey: ["products", categoryName, tagName, maxPrice, minPrice],
+    queryKey: ["products", categoryName, tagName, maxPrice, minPrice, size],
     queryFn: fetchProducts,
   });
 
-  // Sorting state and logic
-  const [sortedProducts, setSortedProducts] = useState<ProductType[] | []>(
-    products
-  );
   const [sortOption, setSortOption] = useState<"price" | "alphabetical" | "">(
     ""
   );
 
-  const handleSort = (option: "price" | "alphabetical") => {
-    const sorted = [...products];
-
-    if (option === "price") {
-      sorted.sort((a, b) => (a.cost ?? 0) - (b.cost ?? 0));
-    } else if (option === "alphabetical") {
-      sorted.sort((a, b) =>
+  const sortedProducts = useMemo(() => {
+    if (sortOption === "price") {
+      return [...products].sort((a, b) => (a.cost ?? 0) - (b.cost ?? 0));
+    }
+    if (sortOption === "alphabetical") {
+      return [...products].sort((a, b) =>
         (a.product_name ?? "").localeCompare(b.product_name ?? "")
       );
     }
+    return products;
+  }, [products, sortOption]);
 
+  const handleSort = (option: "price" | "alphabetical") => {
     setSortOption(option);
-    setSortedProducts(sorted);
   };
-
-  useEffect(() => {
-    setSortedProducts(products);
-  }, [products]);
 
   return (
     <div className="w-full">
       <div className="w-full flex justify-between">
         <TagsProducts />
-        <div className="flex items-center" style={{
+        <div
+          className="flex items-center"
+          style={{
             gap: "10px",
-        }}>
+          }}
+        >
           <label htmlFor="sort-options" className="mr-2">
             Sort:
           </label>

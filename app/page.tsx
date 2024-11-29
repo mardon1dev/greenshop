@@ -1,10 +1,11 @@
-"use client"
+"use client";
 import Carousel from "@/components/Carousel/Carousel";
 import MainImage from "../public/carousel-image1.png";
 import { StaticImageData } from "next/image";
 import Categories from "@/service/Categories";
 import ShowProducts from "@/service/ShowProducts";
 import RangeInput from "@/service/RangeInput/RangeInput";
+import SizeProducts from "@/service/SizeProducts";
 
 export interface SingleDatTypes {
   id: number;
@@ -42,6 +43,7 @@ export default function Home() {
           <div className="bg-[#FBFBFB] p-3 rounded">
             <Categories />
             <RangeInput />
+            <SizeProducts />
           </div>
           <div className="w-full">
             <ShowProducts />
