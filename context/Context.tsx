@@ -28,7 +28,7 @@ export const Context = createContext<ContextType>({
   setCategoryName: () => {},
   tagName: null,
   setTagName: () => {},
-  maxPrice: 700,
+  maxPrice: 900,
   setMaxPrice: () => {},
   minPrice: 25,
   setMinPrice: () => {},
@@ -46,7 +46,7 @@ export const GreenShopContext: React.FC<CountryContextProps> = ({
   const [globalState, setGlobalState] = useState(0);
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [tagName, setTagName] = useState<string | null>(null);
-  const [maxPrice, setMaxPrice] = useState(700);
+  const [maxPrice, setMaxPrice] = useState(900);
   const [minPrice, setMinPrice] = useState(25);
   const [size, setSize] = useState<string | null>(null);
   return (

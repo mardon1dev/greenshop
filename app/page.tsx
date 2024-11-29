@@ -1,7 +1,7 @@
 "use client";
 import Carousel from "@/components/Carousel/Carousel";
 import MainImage from "../public/carousel-image1.png";
-import { StaticImageData } from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Categories from "@/service/Categories";
 import ShowProducts from "@/service/ShowProducts";
 import RangeInput from "@/service/RangeInput/RangeInput";
@@ -44,6 +44,33 @@ export default function Home() {
             <Categories />
             <RangeInput />
             <SizeProducts />
+            <div className="super-sale flex flex-col items-center rounded">
+              <Image
+                src={"/super-sale-top.png"}
+                priority
+                alt="Super-sale-top"
+                width={266}
+                height={65}
+                style={{
+                  objectFit: "contain",
+                  width: "266px",
+                  height: "65px",
+                }}
+              />
+              <p className="uppercase">up to 70% off</p>
+              <Image
+                src={"/super-sale.png"}
+                priority
+                alt="Super-sale-top"
+                width={266}
+                height={370}
+                style={{
+                  objectFit: "cover",
+                  width: "266px",
+                  height: "370px",
+                }}
+              />
+            </div>
           </div>
           <div className="w-full">
             <ShowProducts />

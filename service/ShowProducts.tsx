@@ -3,12 +3,12 @@
 import { Context } from "@/context/Context";
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
-import { Heart, ShoppingCart } from "lucide-react";
-import Image from "next/image";
 import { useContext, useMemo, useState } from "react";
 import TagsProducts from "./TagsProducts";
+import Pagination from "./Pagination/Pagination";
+import ProductCard from "@/components/ui/ProductCard/ProductCard";
 
-interface ProductType {
+export interface ProductType {
   basket?: boolean;
   category_id?: string | null;
   cost?: number | undefined;
@@ -24,6 +24,8 @@ interface ProductType {
   size?: string[];
   tags?: string[];
 }
+
+let PageSize: number = 9;
 
 const ShowProducts = () => {
   const { categoryName, tagName, maxPrice, minPrice, size } =
@@ -71,6 +73,15 @@ const ShowProducts = () => {
     setSortOption(option);
   };
 
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    return sortedProducts.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, sortedProducts]);
+
+
   return (
     <div className="w-full">
       <div className="w-full flex justify-between">
@@ -101,91 +112,28 @@ const ShowProducts = () => {
       <div className="w-full">
         {isLoading ? (
           <div>Loading...</div>
-        ) : sortedProducts.length > 0 ? (
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              rowGap: "70px",
-              justifyContent: "space-between",
-            }}
-          >
-            {sortedProducts.map((product: ProductType) => (
-              <div key={product.product_id}>
-                <div
-                  style={{
-                    position: "relative",
-                    width: "100%",
-                    cursor: "pointer",
-                  }}
-                >
-                  <Image
-                    priority
-                    src={
-                      product?.image_url ? product?.image_url[0] : "/logo.svg"
-                    }
-                    alt={product?.product_name ?? "Image"}
-                    width={250}
-                    height={250}
-                    style={{
-                      objectFit: "cover",
-                      objectPosition: "center",
-                      width: "250px",
-                      height: "250px",
-                    }}
-                  />
-                  {product.discount && (
-                    <span className="absolute top-0 py-2 px-4 text-[16px] bg-green-600 text-white">
-                      {(
-                        (Number(product?.discount) /
-                          (Number(product.cost) + Number(product?.discount))) *
-                        100
-                      ).toFixed()}{" "}
-                      OFF
-                    </span>
-                  )}
-                  <div className="absolute bottom-0 w-full flex items-center justify-center gap-3">
-                    <button
-                      style={{
-                        padding: "8px",
-                      }}
-                      className="bg-white rounded"
-                    >
-                      <Heart />
-                    </button>
-                    <button
-                      style={{
-                        padding: "8px",
-                      }}
-                      className="bg-white rounded"
-                    >
-                      <ShoppingCart />
-                    </button>
-                  </div>
-                </div>
-                <h2>{product.product_name}</h2>
-                <div className="flex space-x-4">
-                  <p className="text-[#46A358] font-semibold">
-                    ${product?.cost?.toFixed(2)}
-                  </p>
-                  {product.discount && (
-                    <p
-                      style={{
-                        textDecoration: "line-through",
-                        color: "#CBCBCB",
-                        marginLeft: "16px",
-                      }}
-                    >
-                      $
-                      {(
-                        Number(product.cost) + Number(product.discount)
-                      ).toFixed(2)}
-                    </p>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+        ) : currentTableData.length > 0 ? (
+          <>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                rowGap: "70px",
+                justifyContent: "space-between",
+              }}
+            >
+              {currentTableData.map((product: ProductType) => (
+                <ProductCard key={product?.product_id} product={product} />
+              ))}
+            </div>
+            <Pagination
+              className="pagination-bar"
+              currentPage={currentPage}
+              totalCount={sortedProducts.length}
+              pageSize={PageSize}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
+          </>
         ) : (
           <div>
             <p>No products found</p>

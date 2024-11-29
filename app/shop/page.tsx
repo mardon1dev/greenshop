@@ -4,8 +4,8 @@ const page = () => {
   return (
     <main className="mt-[12px]">
       <div className="container">
-        <div className="w-full shadow flex items-center justify-between p-3">
-          <h1 className="text-xl font-bold">Shop</h1>
+        <div className="w-full p-3">
+          Shop
         </div>
       </div>
     </main>
