@@ -1,5 +1,4 @@
 "use client";
-import React, { useState } from "react";
 import { ProductType } from "@/service/ShowProducts";
 import Image from "next/image";
 import { Heart, ShoppingCart } from "lucide-react";
@@ -7,28 +6,34 @@ import { Heart, ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import "./product.css";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAxios } from "@/hooks/useAxios";
 
 const ProductCard: React.FC<{ product: ProductType }> = ({ product }) => {
-
-  const router = useRouter()
+  const queryClient = useQueryClient();
+  const router = useRouter();
   const token = localStorage.getItem("access_token");
   const axiosInstance = useAxios();
 
-  const [liked, setLiked] = useState(product?.liked || false);
-
   const likeMutation = useMutation({
-    mutationFn: async (id: string ) => {
-      const response = await axiosInstance.post(`/like/${id}`,{}, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
+    mutationFn: async () => {
+      const response = await axiosInstance.post(
+        `/like/${product?.product_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      console.log(response);
+      
       return response?.data || null;
     },
     onSuccess: () => {
-      setLiked(!liked);
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
     },
     onError: (error) => {
       console.error("Error liking product:", error);
@@ -36,7 +41,7 @@ const ProductCard: React.FC<{ product: ProductType }> = ({ product }) => {
   });
 
   const handleLike = () => {
-    likeMutation.mutate(product?.product_id ? product?.product_id : "");
+    likeMutation.mutate();
   };
 
   return (
@@ -54,8 +59,8 @@ const ProductCard: React.FC<{ product: ProductType }> = ({ product }) => {
             width: "250px",
             height: "250px",
           }}
-          onClick={()=>{
-            router.push(`/shop/${product?.product_id}`)
+          onClick={() => {
+            router.push(`/shop/${product?.product_id}`);
           }}
         />
         {product.discount && (
@@ -71,7 +76,7 @@ const ProductCard: React.FC<{ product: ProductType }> = ({ product }) => {
         <div className="action-buttons">
           <button
             className={`action-button ${
-              liked ? "text-green-600" : ""
+              product?.liked ? "text-green-600" : ""
             }`}
             onClick={() => handleLike()}
           >

@@ -31,10 +31,13 @@ const ShowProducts = () => {
   const { categoryName, tagName, maxPrice, minPrice, size } =
     useContext(Context);
 
+  const token = localStorage.getItem("access_token");
   const axiosInstance = useAxios();
+
 
   const fetchProducts = async () => {
     const response = await axiosInstance.get(`/products`, {
+      headers: token ? { Application: `${token}` } : {},
       params: {
         page: 1,
         limit: 100,
@@ -51,6 +54,7 @@ const ShowProducts = () => {
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["products", categoryName, tagName, maxPrice, minPrice, size],
     queryFn: fetchProducts,
+    enabled: true
   });
 
   const [sortOption, setSortOption] = useState<"price" | "alphabetical" | "">(
@@ -80,7 +84,6 @@ const ShowProducts = () => {
     const lastPageIndex = firstPageIndex + PageSize;
     return sortedProducts.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, sortedProducts]);
-
 
   return (
     <div className="w-full">
