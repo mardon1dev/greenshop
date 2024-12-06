@@ -17,7 +17,7 @@ export interface ProductType {
   image_url?: string[];
   liked?: boolean;
   product_description?: string;
-  product_id?: string;
+  product_id?: string | undefined;
   product_name?: string | undefined;
   product_statu?: string;
   short_description?: string;

@@ -81,7 +81,7 @@ const ShoppingCart = () => {
     });
   };
 
-  const updateQuantity = (id: string, delta: number) => {
+  const updateQuantity = (id: string | undefined, delta: number) => {
     setBasketProducts((prevProducts) =>
       prevProducts.map((product) =>
         product.product_id === id
