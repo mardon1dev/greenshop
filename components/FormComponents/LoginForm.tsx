@@ -1,29 +1,28 @@
 "use client";
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction, useContext, useState } from "react";
 import CustomInput from "../ui/CustomInput";
 import Button from "../ui/Button";
 import { FacebookIcon, GoogleIcon } from "@/public/images/icon";
 import { useAxios } from "@/hooks/useAxios";
 import { Loader } from "lucide-react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import { Context } from "@/context/Context";
 
 interface LoginAction {
   setFormAction: React.Dispatch<SetStateAction<string>>;
   setUserEmail: React.Dispatch<SetStateAction<string>>;
   setOpenModal: React.Dispatch<SetStateAction<boolean>>;
-  setGlobalState: React.Dispatch<SetStateAction<number>>;
-  globalState: number
 }
 
 const LoginForm: React.FC<LoginAction> = ({
   setFormAction,
   setUserEmail,
   setOpenModal,
-  setGlobalState,
-  globalState
 }) => {
   const axiosInstance = useAxios();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { setToken, setUserName, setUserId } = useContext(Context);
 
   async function handleLoginSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,15 +35,14 @@ const LoginForm: React.FC<LoginAction> = ({
     try {
       const response = await axiosInstance.post("/login", data);
       if (response.status === 200) {
-        localStorage.setItem("access_token", response?.data?.access_token);
-        localStorage.setItem("firstName", response?.data?.first_name);
-        localStorage.setItem("userId", response?.data?.id);
+        setToken(response.data?.access_token);
+        setUserName(response.data?.first_name);
+        setUserId(response.data?.id);
         toast.success("Login successful!");
         setTimeout(() => {
           setOpenModal(false);
         }, 500);
         setIsLoading(false);
-        setGlobalState(globalState + 1);
         (e.target as HTMLFormElement).reset();
       } else {
         setIsLoading(false);
@@ -63,7 +61,6 @@ const LoginForm: React.FC<LoginAction> = ({
 
   return (
     <div className="mt-[53px] max-w-[350px] w-full">
-      <Toaster position="top-right" reverseOrder={false} />
       <p>Enter your username and password to login.</p>
       <form
         className="space-y-4 mt-[14px]"

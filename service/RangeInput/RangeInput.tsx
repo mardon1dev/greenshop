@@ -52,7 +52,7 @@ const RangeInput = () => {
             <span id="range2"> ${sliderTwoValue}</span>
           </p>
         </div>
-        <div className="">
+        <div>
           <div
             className="slider-track"
             style={{ background: fillColor() }}

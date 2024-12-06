@@ -4,7 +4,7 @@ import CustomInput from "../ui/CustomInput";
 import Button from "../ui/Button";
 import { FacebookIcon, GoogleIcon } from "@/public/images/icon";
 import { useAxios } from "@/hooks/useAxios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { Loader } from "lucide-react";
 
 interface RegisterAction {
@@ -51,7 +51,6 @@ const RegisterForm: React.FC<RegisterAction> = ({
   }
   return (
     <div className="mt-[53px] max-w-[350px] w-full">
-      <Toaster position="top-right" reverseOrder={false} />
       <p>Enter your username, email, and password to register.</p>
       <form
         className="space-y-4 mt-[14px]"

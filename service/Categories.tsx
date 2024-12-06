@@ -1,6 +1,5 @@
 "use client";
 import { Context } from "@/context/Context";
-import getProducts from "@/helper/functions/GetData";
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
@@ -30,7 +29,7 @@ const Categories = () => {
   });
 
   return (
-    <div className="w-[300px]" aria-label="Categories">
+    <div className="max-w-[300px] w-full" aria-label="Categories">
       <h2 className="text-lg font-medium text-gray-900 mb-4">Categories</h2>
       <p
         className={`${

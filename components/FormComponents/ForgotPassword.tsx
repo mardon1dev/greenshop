@@ -3,7 +3,7 @@ import React, { SetStateAction, useState } from "react";
 import CustomInput from "../ui/CustomInput";
 import Button from "../ui/Button";
 import { useAxios } from "@/hooks/useAxios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 interface ForgotPaswordAction {
   setFormAction: React.Dispatch<SetStateAction<string>>;
@@ -46,7 +46,6 @@ const ForgotPassword: React.FC<ForgotPaswordAction> = ({
   }
   return (
     <div className="mt-[53px] w-[300px]">
-      <Toaster position="top-right" reverseOrder={false} />
       <form
         className="space-y-4 mt-[14px]"
         autoComplete="off"

@@ -18,35 +18,22 @@ interface UserInfo {
 }
 
 const Page = () => {
-  const {setGlobalState, globalState} = useContext(Context)
+  const { token, userId, setToken, setUserName, setUserId } =
+    useContext(Context);
   const location = useRouter();
-
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const userId = localStorage.getItem("userId");
-      const token = localStorage.getItem("access_token");
-      setAccessToken(token);
-      setUserId(userId);
-    }
-  }, [globalState]);
-
   const axiosInstance = useAxios();
-
   const [data, setData] = useState<UserInfo | null>(null);
   const [openLogOut, setOpenLogOut] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (userId && accessToken) {
+      if (token) {
         try {
           const response = await axiosInstance.get(`user/${userId}`, {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `${accessToken}`,
+              Authorization: `${token}`,
             },
           });
           setData(response.data);
@@ -58,12 +45,14 @@ const Page = () => {
     };
 
     fetchUserData();
-  }, [userId, accessToken]);
+  }, [userId, token]);
 
   const handleLogOut = () => {
     setOpenLogOut(false);
-    setGlobalState(globalState + 1)
     localStorage.clear();
+    setToken(null);
+    setUserId(null);
+    setUserName(null);
     location.push("/");
   };
 

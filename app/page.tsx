@@ -6,6 +6,7 @@ import Categories from "@/service/Categories";
 import ShowProducts from "@/service/ShowProducts";
 import RangeInput from "@/service/RangeInput/RangeInput";
 import SizeProducts from "@/service/SizeProducts";
+import { Toaster } from "react-hot-toast";
 
 export interface SingleDatTypes {
   id: number;
@@ -37,10 +38,11 @@ export default function Home() {
   ];
   return (
     <main className="mt-[12px]">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="container">
         <Carousel data={DATA} />
         <div className="w-full mt-[46px] mb-[46px] flex gap-[50px]">
-          <div className="bg-[#FBFBFB] p-3 rounded">
+          <div className="bg-[#FBFBFB] p-3 rounded md:block hidden">
             <Categories />
             <RangeInput />
             <SizeProducts />
@@ -56,6 +58,7 @@ export default function Home() {
                   width: "266px",
                   height: "65px",
                 }}
+                className="w-full max-w-[266px] h-[65px]"
               />
               <p className="uppercase">up to 70% off</p>
               <Image
@@ -72,7 +75,7 @@ export default function Home() {
               />
             </div>
           </div>
-          <div className="w-full">
+          <div className="w-full px-3">
             <ShowProducts />
           </div>
         </div>

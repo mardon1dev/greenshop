@@ -28,16 +28,14 @@ export interface ProductType {
 let PageSize: number = 9;
 
 const ShowProducts = () => {
-  const { categoryName, tagName, maxPrice, minPrice, size } =
+  const { categoryName, tagName, maxPrice, minPrice, size, token } =
     useContext(Context);
 
-  const token = localStorage.getItem("access_token");
   const axiosInstance = useAxios();
-
 
   const fetchProducts = async () => {
     const response = await axiosInstance.get(`/products`, {
-      headers: token ? { Application: `${token}` } : {},
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
       params: {
         page: 1,
         limit: 100,
@@ -52,9 +50,18 @@ const ShowProducts = () => {
   };
 
   const { data: products = [], isLoading } = useQuery({
-    queryKey: ["products", categoryName, tagName, maxPrice, minPrice, size],
+    queryKey: [
+      "products",
+      "basket",
+      "product",
+      categoryName,
+      tagName,
+      maxPrice,
+      minPrice,
+      size,
+    ],
     queryFn: fetchProducts,
-    enabled: true
+    enabled: true,
   });
 
   const [sortOption, setSortOption] = useState<"price" | "alphabetical" | "">(
@@ -87,7 +94,7 @@ const ShowProducts = () => {
 
   return (
     <div className="w-full">
-      <div className="w-full flex justify-between">
+      <div className="w-full md:flex justify-between hidden">
         <TagsProducts />
         <div
           className="flex items-center"
@@ -117,16 +124,14 @@ const ShowProducts = () => {
           <div>Loading...</div>
         ) : currentTableData.length > 0 ? (
           <>
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                rowGap: "70px",
-                justifyContent: "space-between",
-              }}
-            >
+            <div className="grid-container">
               {currentTableData.map((product: ProductType) => (
-                <ProductCard key={product?.product_id} product={product} />
+                <ProductCard
+                  key={product?.product_id}
+                  product={product}
+                  height={250}
+                  width={250}
+                />
               ))}
             </div>
             <Pagination

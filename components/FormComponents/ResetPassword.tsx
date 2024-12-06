@@ -3,7 +3,7 @@ import React, { SetStateAction, useState } from "react";
 import CustomInput from "../ui/CustomInput";
 import Button from "../ui/Button";
 import { useAxios } from "@/hooks/useAxios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { Loader } from "lucide-react";
 
 interface ResetPasswordAction {
@@ -53,7 +53,6 @@ const ResetPassword: React.FC<ResetPasswordAction> = ({
 
   return (
     <div className="mt-[53px] w-[300px]">
-      <Toaster position="top-right" reverseOrder={false} />
       <h2 className="text-[24px] font-bold text-green-600">Rest Password</h2>
       <form
         className="space-y-4 mt-[14px]"

@@ -32,7 +32,7 @@ const Carousel: React.FC<CarouselTypes> = ({ data }) => {
         }}
         navigation={true}
         modules={[Autoplay, Pagination, Navigation]}
-        className="mySwiper"
+        className="mySwiper2"
       >
         {data.map((item) => (
           <SwiperSlide key={item.id}>

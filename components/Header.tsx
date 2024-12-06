@@ -13,6 +13,7 @@ import VerifyUserForm from "./FormComponents/VerifyUserForm";
 import ForgotPassword from "./FormComponents/ForgotPassword";
 import ResetPassword from "./FormComponents/ResetPassword";
 import { Context } from "@/context/Context";
+import BasketPart from "./ui/BasketPart";
 
 const Header = () => {
   const navlinks = [
@@ -22,7 +23,8 @@ const Header = () => {
     { path: "/blogs", label: "Blogs" },
   ];
 
-  const { globalState, setGlobalState } = useContext(Context);
+  const { token, setToken, userName, setUserName, setUserId } =
+    useContext(Context);
 
   const pathname = usePathname();
   const location = useRouter();
@@ -31,18 +33,27 @@ const Header = () => {
   const [userEmail, setUserEmail] = useState("");
 
   const [openNavbar, setOpenNavbar] = useState(false);
-
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [userName, setUserName] = useState<string | null>(null);
+  const [currentPath, setCurrentPath] = useState<string>("/");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("access_token");
       const name = localStorage.getItem("firstName");
-      setAccessToken(token);
+      const userId = localStorage.getItem("userId");
+      setToken(token);
       setUserName(name);
+      setUserId(userId);
     }
-  }, [globalState]);
+  }, []);
+
+  useEffect(() => {
+    if (pathname !== currentPath) {
+      setCurrentPath(pathname);
+      setOpenNavbar(true);
+    } else {
+      setOpenNavbar(false);
+    }
+  }, [pathname, currentPath]);
 
   return (
     <>
@@ -87,7 +98,11 @@ const Header = () => {
                   key={path}
                   href={path}
                   className={`border-b-[3px] ${
-                    pathname === path
+                    path === "/"
+                      ? pathname === path
+                        ? "border-green-600 text-green-700"
+                        : "border-transparent"
+                      : pathname.startsWith(path)
                       ? "border-green-600 text-green-700"
                       : "border-transparent"
                   } py-5 font-semibold`}
@@ -101,15 +116,13 @@ const Header = () => {
               <button className="text-gray-600" aria-label="Search">
                 <Search className="h-5 w-5" />
               </button>
-              <div className="relative">
-                <button className="text-gray-600" aria-label="Shopping Cart">
-                  <ShoppingCart className="h-5 w-5" />
-                </button>
-                <span className="absolute -top-1 -right-1 flex items-center w-[12px] h-[12px] text-[8px] justify-center bg-green-600 text-white p-0 rounded-full">
-                  0
-                </span>
+              <div
+                onClick={() => location.push("/shop/shopping-cart")}
+                className="cursor-pointer"
+              >
+                <BasketPart />
               </div>
-              {!accessToken ? (
+              {!token ? (
                 <Button
                   iconLeft={<LogIn />}
                   title="Login"
@@ -147,17 +160,21 @@ const Header = () => {
           >
             <X />
           </button>
-          <div className="flex flex-col items-start justify-between h-screen bg-white w-1/2 py-[50px] sm:px-[30px] px-[10px]">
+          <div className="flex flex-col items-start justify-between h-screen bg-white w-2/3 py-[50px] sm:px-[30px] px-[10px]">
             <div className="flex flex-col items-start justify-start gap-[20px]">
               {navlinks.map(({ path, label }) => (
                 <Link
                   key={path}
                   href={path}
                   className={`border-b-[3px] ${
-                    pathname === path
+                    path === "/"
+                      ? pathname === path
+                        ? "border-green-600 text-green-700"
+                        : "border-transparent"
+                      : pathname.startsWith(path)
                       ? "border-green-600 text-green-700"
                       : "border-transparent"
-                  } font-semibold`}
+                  } py-2 font-semibold`}
                 >
                   {label}
                 </Link>
@@ -258,8 +275,6 @@ const Header = () => {
               setFormAction={setFormAction}
               setUserEmail={setUserEmail}
               setOpenModal={setOpenModal}
-              setGlobalState={setGlobalState}
-              globalState={globalState}
             />
           )}
           {formAction == "register" && (

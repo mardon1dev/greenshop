@@ -4,7 +4,7 @@ import React, { useState, useRef, KeyboardEvent } from "react";
 import Button from "../ui/Button";
 import { useAxios } from "@/hooks/useAxios";
 import { Loader } from "lucide-react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 interface VerifyUserFormProps {
   setFormAction: React.Dispatch<React.SetStateAction<string>>;
@@ -89,7 +89,6 @@ const VerifyUserForm: React.FC<VerifyUserFormProps> = ({
 
   return (
     <div className="flex flex-col items-center mt-[46px]">
-      <Toaster position="top-right" reverseOrder={false} />
       <h3 className="text-[24px] font-bold text-green-600">Verify User</h3>
       <form className="flex flex-col gap-2" onSubmit={handleVerifySubmit}>
         <div className="flex gap-2">

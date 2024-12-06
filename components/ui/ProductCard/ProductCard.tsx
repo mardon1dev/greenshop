@@ -5,60 +5,75 @@ import { Heart, ShoppingCart } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 
+import { useLikeMutation } from "@/hooks/useLikeMutation";
+import { useBasketMutation } from "@/hooks/useBasketMutation";
 import "./product.css";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAxios } from "@/hooks/useAxios";
+import toast from "react-hot-toast";
 
-const ProductCard: React.FC<{ product: ProductType }> = ({ product }) => {
-  const queryClient = useQueryClient();
+interface ProductInterface {
+  product: ProductType;
+  width: number;
+  height: number;
+}
+
+const ProductCard: React.FC<ProductInterface> = ({
+  product,
+  width,
+  height,
+}) => {
   const router = useRouter();
-  const token = localStorage.getItem("access_token");
-  const axiosInstance = useAxios();
 
-  const likeMutation = useMutation({
-    mutationFn: async () => {
-      const response = await axiosInstance.post(
-        `/like/${product?.product_id}`,
-        {},
-        {
-          headers: {
-            Authorization: `${token}`,
-          },
-        }
-      );
-      console.log(response);
-      
-      return response?.data || null;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["products"],
-      });
-    },
-    onError: (error) => {
-      console.error("Error liking product:", error);
-    },
-  });
+  const likeMutation = useLikeMutation();
+  const basketMutation = useBasketMutation();
 
   const handleLike = () => {
-    likeMutation.mutate();
+    if (product?.product_id) {
+      likeMutation.mutate(product.product_id, {
+        onSuccess: () => {
+          if (product?.liked) {
+            toast.error("Product disliked.");
+          } else {
+            toast.success("Product liked.");
+          }
+        },
+      });
+    }
+  };
+
+  const handleBasket = () => {
+    if (product?.product_id) {
+      basketMutation.mutate(product.product_id, {
+        onSuccess: () => {
+          if (product?.basket) {
+            toast.error("Product removed.");
+          } else {
+            toast.success("Product added.");
+          }
+        },
+      });
+    }
   };
 
   return (
-    <div className="product-card">
+    <div
+      className={`product-card`}
+      style={{
+        width: "100%",
+      }}
+    >
       <div className="product-image-wrapper">
         <Image
           priority
           src={product?.image_url ? product?.image_url[0] : "/logo.svg"}
-          alt={product?.product_name ?? "Image"}
-          width={250}
-          height={250}
+          alt={product?.product_name || "Image"}
+          width={width}
+          height={height}
           style={{
-            objectFit: "cover",
-            objectPosition: "center",
-            width: "250px",
-            height: "250px",
+            objectFit: "contain",
+            width: `${width}px`,
+            height: `${height}px`,
           }}
+          layout="responsive"
           onClick={() => {
             router.push(`/shop/${product?.product_id}`);
           }}
@@ -75,28 +90,55 @@ const ProductCard: React.FC<{ product: ProductType }> = ({ product }) => {
         )}
         <div className="action-buttons">
           <button
-            className={`action-button ${
-              product?.liked ? "text-green-600" : ""
-            }`}
+            className={`${
+              product?.liked ? "bg-white" : "bg-green-600"
+            } action-button`}
             onClick={() => handleLike()}
           >
-            <Heart />
+            {product?.liked ? (
+              <Heart
+                style={{ fill: "currentColor" }}
+                className={"text-red-600"}
+              />
+            ) : (
+              <Heart
+                style={{ fill: "currentColor" }}
+                className={"text-white"}
+              />
+            )}
           </button>
-          <button className="action-button">
-            <ShoppingCart />
+          <button
+            className={`action-button ${
+              product?.basket ? "bg-white" : "bg-green-600"
+            }`}
+            onClick={() => handleBasket()}
+          >
+            {product?.basket ? (
+              <ShoppingCart
+                style={{ fill: "currentColor" }}
+                className={"text-blue-800"}
+              />
+            ) : (
+              <ShoppingCart
+                style={{ fill: "currentColor" }}
+                className={"text-white"}
+              />
+            )}
           </button>
         </div>
       </div>
-      <h2>{product.product_name}</h2>
-      <div className="flex space-x-4">
-        <p className="text-[#46A358] font-semibold">
-          ${product?.cost?.toFixed(2)}
-        </p>
-        {product.discount && (
-          <p className="original-price">
-            ${(Number(product.cost) + Number(product.discount)).toFixed(2)}
+      <div>
+        <h2>{product.product_name}</h2>
+        <div className="flex space-x-4">
+          <p className="text-[#46A358] font-semibold">
+            ${product?.cost?.toFixed(2)}
           </p>
-        )}
+          {product.discount && (
+            <p className="original-price">
+              ${(Number(product.cost) + Number(product.discount)).toFixed(2)}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
