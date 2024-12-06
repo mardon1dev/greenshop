@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
 
-const layout: React.FC<{ children: ReactNode }> = ({ children }) => {
+const MainLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -35,4 +35,4 @@ const layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
-export default layout;
+export default MainLayout;

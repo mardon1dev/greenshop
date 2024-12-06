@@ -28,7 +28,7 @@ const GetProducts = () => {
     return response?.data?.products || [];
   };
 
-  const { data: products = [], isLoading } = useQuery({
+  const { data: products = [] } = useQuery({
     queryKey: ["products", "basket"],
     queryFn: fetchProducts,
     enabled: true,

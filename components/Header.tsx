@@ -1,6 +1,6 @@
 "use client";
 
-import { LogIn, Menu, Search, ShoppingCart, User2Icon, X } from "lucide-react";
+import { LogIn, Menu, Search, User2Icon, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -44,7 +44,7 @@ const Header = () => {
       setUserName(name);
       setUserId(userId);
     }
-  }, []);
+  }, [setToken, setUserName, setUserId]);
 
   useEffect(() => {
     if (pathname !== currentPath) {

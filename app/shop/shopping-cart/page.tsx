@@ -63,7 +63,7 @@ const ShoppingCart = () => {
     } else if (basket.length === 0 && basketProducts.length > 0) {
       setBasketProducts([]);
     }
-  }, [basket]);
+  }, [basket, basketProducts.length]);
 
   const basketMutation = useBasketMutation();
 

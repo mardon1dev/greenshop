@@ -45,7 +45,7 @@ const Page = () => {
     };
 
     fetchUserData();
-  }, [userId, token]);
+  }, [userId, token, axiosInstance]);
 
   const handleLogOut = () => {
     setOpenLogOut(false);
