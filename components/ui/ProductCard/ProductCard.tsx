@@ -73,7 +73,6 @@ const ProductCard: React.FC<ProductInterface> = ({
             width: `${width}px`,
             height: `${height}px`,
           }}
-          layout="responsive"
           onClick={() => {
             router.push(`/shop/${product?.product_id}`);
           }}
