@@ -28,8 +28,6 @@ const Categories = () => {
     queryFn: getData,
   });
 
-  console.log(isLoading, categories);
-
   return (
     <div className="max-w-[300px] w-full" aria-label="Categories">
       <h2 className="text-lg font-medium text-gray-900 mb-4">Categories</h2>
