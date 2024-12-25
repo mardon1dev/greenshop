@@ -19,29 +19,29 @@ const Categories = () => {
         limit: 100,
       },
     });
-    return response?.data;
+    return response?.data?.categories;
   }
 
   const { setCategoryName, categoryName } = useContext(Context);
   const { data: categories = [], isLoading } = useQuery({
     queryKey: ["categories"],
-    queryFn: async () => getData(),
+    queryFn: getData,
   });
+
+  console.log(isLoading, categories);
 
   return (
     <div className="max-w-[300px] w-full" aria-label="Categories">
       <h2 className="text-lg font-medium text-gray-900 mb-4">Categories</h2>
       <p
         className={`${
-        categoryName === null
-            ? "text-green-600"
-            : "text-gray-600"
+          categoryName === null ? "text-green-600" : "text-gray-600"
         }
           "flex justify-between items-center text-sm hover:text-gray-900 text-gray-600 cursor-pointer"
             `}
         style={{
           marginBottom: "10px",
-          cursor: "pointer"
+          cursor: "pointer",
         }}
         onClick={() => {
           setCategoryName(null);
@@ -53,7 +53,7 @@ const Categories = () => {
         <p>Loading...</p>
       ) : (
         <ul className="flex flex-col gap-5">
-          {categories?.categories.map((category: Category) => (
+          {categories?.map((category: Category) => (
             <li key={category.category_name}>
               <p
                 className={` ${
@@ -63,9 +63,9 @@ const Categories = () => {
                 }
                   "flex justify-between items-center py-1 text-sm hover:text-gray-900 cursor-pointer"
                     `}
-                    style={{
-                        cursor: "pointer"
-                    }}
+                style={{
+                  cursor: "pointer",
+                }}
                 onClick={() => {
                   setCategoryName(category.category_name);
                 }}
